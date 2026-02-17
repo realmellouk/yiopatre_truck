@@ -321,7 +321,7 @@ function addSampleProducts() {
         price: 599.00,
         stock: 40,
         featured: true,
-        image: "/images/filter1.jpg",
+        image: "public/images/filter1.jpg",
         description: "Heavy-duty air filter providing maximum engine protection in dusty environments. Designed for commercial trucks.",
         warranty: 6
     },
@@ -334,7 +334,7 @@ function addSampleProducts() {
         price: 895.00,
         stock: 25,
         featured: false,
-        image: "/images/filter2.jpg",
+        image: "public/filter2.jpg",
         description: "Advanced fuel filtration system with water separation for diesel engines.",
         warranty: 12
     },
@@ -347,7 +347,7 @@ function addSampleProducts() {
         price: 427.00,
         stock: 60,
         featured: false,
-        image: "/images/filter3.jpg",
+        image: "public/filter3.jpg",
         description: "Premium oil filter with synthetic media for extended service intervals.",
         warranty: 12
     },
@@ -360,7 +360,7 @@ function addSampleProducts() {
         price: 360.00,
         stock: 35,
         featured: false,
-        image: "/images/filter4.jpg",
+        image: "public/filter4.jpg",
         description: "HEPA cabin air filter for improved air quality in truck cabins.",
         warranty: 6
     },
@@ -373,7 +373,7 @@ function addSampleProducts() {
         price: 1250.00,
         stock: 15,
         featured: false,
-        image: "/images/filter5.jpg",
+        image: "public/filter5.jpg",
         description: "Complete hydraulic filtration kit for heavy equipment and trucks.",
         warranty: 12
     },
@@ -386,7 +386,7 @@ function addSampleProducts() {
         price: 2899.00,
         stock: 30,
         featured: true,
-        image: "/images/brake1.jpg",
+        image: "public/brake1.jpg",
         description: "Ceramic brake pads for commercial trucks with extended lifespan.",
         warranty: 24
     },
@@ -399,7 +399,7 @@ function addSampleProducts() {
         price: 1455.00,
         stock: 40,
         featured: false,
-        image: "/images/brake2.jpg",
+        image: "public/brake2.jpg",
         description: "Reliable air brake chamber for heavy-duty truck applications.",
         warranty: 18
     },
@@ -412,7 +412,7 @@ function addSampleProducts() {
         price: 4200.00,
         stock: 18,
         featured: false,
-        image: "/images/brake3.jpg",
+        image: "public/brake3.jpg",
         description: "Vented brake rotors designed for high-temperature heavy-duty use.",
         warranty: 24
     },
@@ -425,7 +425,7 @@ function addSampleProducts() {
         price: 3257.00,
         stock: 22,
         featured: false,
-        image: "/images/brake4.jpg",
+        image: "public/brake4.jpg",
         description: "Complete brake caliper assembly with mounting hardware.",
         warranty: 12
     },
@@ -438,7 +438,7 @@ function addSampleProducts() {
         price: 899.00,
         stock: 50,
         featured: false,
-        image: "/images/brake5.jpg",
+        image: "public/brake5.jpg",
         description: "Wheel speed sensor for anti-lock braking systems.",
         warranty: 12
     },
@@ -451,7 +451,7 @@ function addSampleProducts() {
         price: 1999.00,
         stock: 45,
         featured: true,
-        image: "/images/light1.jpg",
+        image: "public/light1.jpg",
         description: "Bright LED headlights with 10,000 lumens output for improved visibility.",
         warranty: 36
     },
@@ -464,7 +464,7 @@ function addSampleProducts() {
         price: 4500.00,
         stock: 20,
         featured: false,
-        image: "/images/light2.jpg",
+        image: "public/light2.jpg",
         description: "50-inch LED light bar with spot/flood combo pattern.",
         warranty: 60
     },
@@ -477,7 +477,7 @@ function addSampleProducts() {
         price: 1655.00,
         stock: 35,
         featured: false,
-        image: "/images/light3.jpg",
+        image: "public/light3.jpg",
         description: "Complete LED tail light assembly with stop, turn, and reverse functions.",
         warranty: 24
     },
@@ -490,7 +490,7 @@ function addSampleProducts() {
         price: 752.50,
         stock: 60,
         featured: false,
-        image: "/images/light4.jpg",
+        image: "public/light4.jpg",
         description: "Set of 10 LED clearance and marker lights with mounting hardware.",
         warranty: 36
     },
@@ -503,7 +503,7 @@ function addSampleProducts() {
         price: 1899.99,
         stock: 25,
         featured: false,
-        image: "/images/light5.jpg",
+        image: "public/light5.jpg",
         description: "High-performance LED fog light kit with mounting brackets.",
         warranty: 24
     },
@@ -516,7 +516,7 @@ function addSampleProducts() {
         price: 24500.00,
         stock: 8,
         featured: true,
-        image: "/images/turbo1.jpg",
+        image: "public/turbo1.jpg",
         description: "Complete turbocharger assembly for Cummins ISX15 engine.",
         warranty: 24
     },
@@ -529,7 +529,7 @@ function addSampleProducts() {
         price: 4857.50,
         stock: 25,
         featured: false,
-        image: "/images/turbo2.jpg",
+        image: "public/turbo2.jpg",
         description: "270-amp heavy duty alternator for commercial vehicles.",
         warranty: 18
     },
@@ -542,7 +542,7 @@ function addSampleProducts() {
         price: 3255.00,
         stock: 30,
         featured: false,
-        image: "/images/turbo3.jpg",
+        image: "public/turbo3.jpg",
         description: "Heavy duty water pump for Mack M11 engine applications.",
         warranty: 12
     },
@@ -555,7 +555,7 @@ function addSampleProducts() {
         price: 1455.00,
         stock: 45,
         featured: false,
-        image: "/images/plug4.jpg",
+        image: "public/plug4.jpg",
         description: "Set of 8 glow plugs for diesel engine cold starts.",
         warranty: 12
     },
@@ -568,7 +568,7 @@ function addSampleProducts() {
         price: 4202.50,
         stock: 18,
         featured: false,
-        image: "/images/turbo4.jpg",
+        image: "public/turbo4.jpg",
         description: "Complete engine mount kit for heavy-duty vibration reduction.",
         warranty: 24
     },
@@ -581,7 +581,7 @@ function addSampleProducts() {
         price: 8500.00,
         stock: 15,
         featured: true,
-        image: "/images/clutch1.jpg",
+        image: "public/clutch1.jpg",
         description: "Complete clutch kit for heavy-duty truck transmissions.",
         warranty: 24
     },
@@ -594,7 +594,7 @@ function addSampleProducts() {
         price: 955.00,
         stock: 40,
         featured: false,
-        image: "/images/clutch2.jpg",
+        image: "public/clutch2.jpg",
         description: "Transmission filter and gasket kit for Allison transmissions.",
         warranty: 12
     },
@@ -607,7 +607,7 @@ function addSampleProducts() {
         price: 1655.00,
         stock: 35,
         featured: false,
-        image: "/images/clutch 3.jpg",
+        image: "public/clutch 3.jpg",
         description: "Heavy duty universal joint kit for driveline applications.",
         warranty: 12
     },
@@ -620,7 +620,7 @@ function addSampleProducts() {
         price: 899.00,
         stock: 50,
         featured: false,
-        image: "/images/clutch4.jpg",
+        image: "public/clutch4.jpg",
         description: "Polyurethane transmission mount for reduced movement.",
         warranty: 24
     },
@@ -633,7 +633,7 @@ function addSampleProducts() {
         price: 3250.00,
         stock: 12,
         featured: false,
-        image: "/images/clutch5.jpg",
+        image: "public/clutch5.jpg",
         description: "Shift fork assembly for 13-speed manual transmissions.",
         warranty: 12
     },
@@ -646,7 +646,7 @@ function addSampleProducts() {
         price: 3850.00,
         stock: 30,
         featured: true,
-        image: "/images/air1.jpg",
+        image: "public/air1.jpg",
         description: "Heavy duty air spring assembly for truck suspension systems.",
         warranty: 24
     },
@@ -659,7 +659,7 @@ function addSampleProducts() {
         price: 12500.00,
         stock: 10,
         featured: false,
-        image: "/images/air2.png",
+        image: "public/air2.png",
         description: "Complete leaf spring set for tandem axle trucks.",
         warranty: 36
     },
@@ -672,7 +672,7 @@ function addSampleProducts() {
         price: 2255.00,
         stock: 40,
         featured: false,
-        image: "/images/air3.jpg",
+        image: "public/air3.jpg",
         description: "Heavy duty shock absorbers for commercial vehicle applications.",
         warranty: 24
     },
@@ -685,7 +685,7 @@ function addSampleProducts() {
         price: 1899.99,
         stock: 25,
         featured: false,
-        image: "/images/air4.jpg",
+        image: "public/air4.jpg",
         description: "Adjustable track bar for improved axle alignment.",
         warranty: 12
     },
@@ -698,7 +698,7 @@ function addSampleProducts() {
         price: 1455.00,
         stock: 35,
         featured: false,
-        image: "/images/air5.jpg",
+        image: "public/air5.jpg",
         description: "Complete polyurethane suspension bushing kit.",
         warranty: 24
     },
@@ -711,7 +711,7 @@ function addSampleProducts() {
         price: 2899.99,
         stock: 50,
         featured: true,
-        image: "/images/battery1.jpg",
+        image: "public/battery1.jpg",
         description: "Group 31 heavy duty commercial truck battery with 950 CCA.",
         warranty: 36
     },
@@ -724,7 +724,7 @@ function addSampleProducts() {
         price: 5250.00,
         stock: 18,
         featured: false,
-        image: "/images/battery2.png",
+        image: "public/battery2.png",
         description: "High torque starter motor for Detroit Diesel DD15 engines.",
         warranty: 24
     },
@@ -737,7 +737,7 @@ function addSampleProducts() {
         price: 4507.50,
         stock: 12,
         featured: false,
-        image: "/images/battery3.jpg",
+        image: "public/battery3.jpg",
         description: "Complete 12-circuit wiring harness for truck electrical systems.",
         warranty: 12
     },
@@ -750,7 +750,7 @@ function addSampleProducts() {
         price: 1899.50,
         stock: 30,
         featured: false,
-        image: "/images/battery4.jpg",
+        image: "public/battery4.jpg",
         description: "16-circuit breaker panel with waterproof cover.",
         warranty: 24
     },
@@ -763,7 +763,7 @@ function addSampleProducts() {
         price: 955.00,
         stock: 45,
         featured: false,
-        image: "/images/battery5.jpg",
+        image: "public/battery5.jpg",
         description: "External voltage regulator for 28SI series alternators.",
         warranty: 12
     },
@@ -776,7 +776,7 @@ function addSampleProducts() {
         price: 12500.00,
         stock: 10,
         featured: true,
-        image: "/images/fan1.jpg",
+        image: "public/fan1.jpg",
         description: "Aluminum heavy duty radiator for commercial truck applications.",
         warranty: 36
     },
@@ -789,7 +789,7 @@ function addSampleProducts() {
         price: 8500.00,
         stock: 15,
         featured: false,
-        image: "/images/fan2.jpg",
+        image: "public/fan2.jpg",
         description: "High efficiency intercooler for Cummins ISX15 engines.",
         warranty: 24
     },
@@ -802,7 +802,7 @@ function addSampleProducts() {
         price: 1455.00,
         stock: 35,
         featured: false,
-        image: "/images/fan3.jpg",
+        image: "public/fan3.jpg",
         description: "5-gallon coolant overflow reservoir with mounting brackets.",
         warranty: 12
     },
@@ -815,7 +815,7 @@ function addSampleProducts() {
         price: 3250.00,
         stock: 25,
         featured: false,
-        image: "/images/fan4.jpg",
+        image: "public/fan4.jpg",
         description: "Viscous fan clutch for heavy duty cooling systems.",
         warranty: 12
     },
@@ -828,7 +828,7 @@ function addSampleProducts() {
         price: 4202.50,
         stock: 20,
         featured: false,
-        image: "/images/fan5.jpg",
+        image: "public/fan5.jpg",
         description: "38-inch electric cooling fan with shroud assembly.",
         warranty: 24
     },
@@ -841,7 +841,7 @@ function addSampleProducts() {
         price: 18500.00,
         stock: 8,
         featured: true,
-        image: "/images/fuel1.jpg",
+        image: "public/fuel1.jpg",
         description: "P7100 fuel injection pump for Cummins diesel engines.",
         warranty: 24
     },
@@ -854,7 +854,7 @@ function addSampleProducts() {
         price: 9507.50,
         stock: 12,
         featured: false,
-        image: "/images/fuel2.jpg",
+        image: "public/fuel2.jpg",
         description: "100-gallon aluminum fuel tank with mounting hardware.",
         warranty: 60
     },
@@ -867,7 +867,7 @@ function addSampleProducts() {
         price: 12500.50,
         stock: 15,
         featured: false,
-        image: "/images/fuel3.png",
+        image: "public/fuel3.png",
         description: "Set of 6 remanufactured fuel injectors for diesel engines.",
         warranty: 24
     },
@@ -880,7 +880,7 @@ function addSampleProducts() {
         price: 2899.99,
         stock: 25,
         featured: false,
-        image: "/images/fuel4.jpg",
+        image: "public/fuel4.jpg",
         description: "Complete stainless steel braided fuel line kit.",
         warranty: 12
     },
@@ -893,7 +893,7 @@ function addSampleProducts() {
         price: 457.50,
         stock: 60,
         featured: false,
-        image: "/images/fuel5.jpg",
+        image: "public/fuel5.jpg",
         description: "Locking fuel cap with tether for commercial vehicles.",
         warranty: 12
     },
@@ -906,7 +906,7 @@ function addSampleProducts() {
         price: 12500.00,
         stock: 15,
         featured: true,
-        image: "/images/Exhaust1.jpg",
+        image: "public/Exhaust1.jpg",
         description: "5-inch aluminized performance exhaust system for trucks.",
         warranty: 60
     },
@@ -919,7 +919,7 @@ function addSampleProducts() {
         price: 28500.00,
         stock: 8,
         featured: false,
-        image: "/images/Exhaust2.jpg",
+        image: "public/Exhaust2.jpg",
         description: "EPA compliant DPF filter for Detroit Diesel DD15 engines.",
         warranty: 24
     },
@@ -932,7 +932,7 @@ function addSampleProducts() {
         price: 6507.50,
         stock: 20,
         featured: false,
-        image: "/images/Exhaust3.jpg",
+        image: "public/Exhaust3.jpg",
         description: "High-flow exhaust manifold for Caterpillar C15 engines.",
         warranty: 24
     },
@@ -945,7 +945,7 @@ function addSampleProducts() {
         price: 3250.00,
         stock: 30,
         featured: false,
-        image: "/images/Exhaust4.jpg",
+        image: "public/Exhaust4.jpg",
         description: "8-inch round heavy duty muffler for commercial trucks.",
         warranty: 36
     },
@@ -958,7 +958,7 @@ function addSampleProducts() {
         price: 899.99,
         stock: 50,
         featured: false,
-        image: "/images/Exhaust5.jpg",
+        image: "public/Exhaust5.jpg",
         description: "Kit of 10 heavy duty band clamps for exhaust systems.",
         warranty: 12
     }
