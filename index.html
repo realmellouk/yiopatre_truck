@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yiopatre Truck - Professional Truck Parts Marketplace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+    <!-- Debug Panel (remove in production)
+    <div style="position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; border-radius: 5px; z-index: 9999; font-size: 12px;">
+        <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+            <button onclick="debugProducts()" style="background: #333; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+                Debug
+            </button>
+            <button onclick="forceAddSamples()" style="background: #f00; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+                Add Samples
+            </button>
+            <button onclick="clearAllData()" style="background: #900; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+                Clear Data
+            </button>
+            <button onclick="location.reload()" style="background: #009; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+                Reload
+            </button>
+        </div>
+        <div style="margin-top: 5px; font-size: 10px;">
+            Products: <span id="debug-count">0</span>
+        </div>
+    </div> -->
+<!-- Add more debug buttons -->
+<!-- <div style="position: fixed; bottom: 100px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 5px;">
+    <button onclick="createAdminUser()" style="background: #27ae60; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+        Admin
+    </button> -->
+    <!-- <button onclick="debugAdminLogin()" style="background: #f39c12; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+        Debug Login
+    </button>
+    <button onclick="showAllUsers()" style="background: #9b59b6; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+        Show All Users
+    </button>
+    <button onclick="clearAndReset()" style="background: #e74c3c; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+        Clear & Reset
+    </button> -->
+<!-- </div> -->
+
+<script>
+    // Update debug panel
+    setInterval(() => {
+        document.getElementById('debug-count').textContent = products ? products.length : 0;
+    }, 1000);
+</script>
+<body>
+    <!-- Test Admin Login Button -->
+<!-- <div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999;">
+    <button onclick="testAdminLogin()" style="background: #ff6b35; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+        Test Admin Login
+    </button> -->
+</div>
+
+<script>
+function testAdminLogin() {
+    console.log('Testing admin login...');
+    
+    // Auto-fill admin credentials
+    const emailInput = document.getElementById('login-email');
+    const passwordInput = document.getElementById('login-password');
+    
+    if (emailInput && passwordInput) {
+        emailInput.value = 'admin@yiopatretruck.com';
+        passwordInput.value = 'admin123';
+        console.log('Auto-filled admin credentials');
+    }
+    
+    // Try to login
+    const success = login('admin@yiopatretruck.com', 'admin123');
+    console.log('Login result:', success);
+    
+    if (success) {
+        console.log('Admin login successful!');
+        // Force refresh admin status
+        setTimeout(() => {
+            updateAuthUI();
+            console.log('Auth UI updated');
+        }, 100);
+    }
+}
+</script>
+    <!-- ========== HEADER ========== -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#home" class="logo" onclick="showPage('home')">
+                    
+                    <span><img src="images/logo.png" alt="Yiopatre Truck Logo">  Yiopatre Truck</span>
+                </a>
+                
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <ul class="nav" id="main-nav">
+                    <li><a href="#home" onclick="showPage('home')"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#products" onclick="showPage('products')"><i class="fas fa-boxes"></i> Products</a></li>
+                    <li><a href="#categories" onclick="showPage('categories')"><i class="fas fa-list"></i> Categories</a></li>
+                    <li><a href="#cart" onclick="showPage('cart')"><i class="fas fa-shopping-cart"></i> Cart (<span id="cart-count">0</span>)</a></li>
+                    <li><a href="#orders" onclick="showPage('orders')"><i class="fas fa-clipboard-list"></i> My Orders</a></li>
+                    <li><a href="#support" onclick="showPage('support')"><i class="fas fa-headset"></i> Support</a></li>
+                    <li><a href="#admin" onclick="showPage('admin')"><i class="fas fa-cogs"></i> Admin</a></li>
+                </ul>
+                
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <input type="text" id="search-input" placeholder="Search parts, brands, or reference..." onkeyup="searchProducts()">
+                        <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+                    </div>
+                    
+                    <!-- Auth Buttons / User Menu -->
+                    <div class="auth-buttons" id="auth-buttons">
+                        <button class="btn-login" onclick="showPage('auth')">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                        <button class="btn-signup" onclick="showPage('auth'); switchAuthTab('signup');">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </button>
+                    </div>
+                    
+                    <div class="user-menu hidden" id="user-menu">
+                        <div class="user-avatar" onclick="toggleUserMenu()" id="user-avatar">
+                            <!-- Initial will be set by JS -->
+                        </div>
+                        <div class="user-dropdown" id="user-dropdown">
+                            <a href="#profile" onclick="showPage('profile')">
+                                <i class="fas fa-user"></i> My Profile
+                            </a>
+                            <a href="#orders" onclick="showPage('orders')">
+                                <i class="fas fa-clipboard-list"></i> My Orders
+                            </a>
+                            <a href="#settings" onclick="showPage('profile')">
+                                <i class="fas fa-cog"></i> Settings
+                            </a>
+                            <a href="#" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <a href="#cart" class="cart-icon" onclick="showPage('cart')">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Cart</span>
+                        <span class="cart-badge" id="cart-badge">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== AUTH PAGE ========== -->
+    <div id="page-auth" class="page hidden">
+        <section class="auth-page">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h2>Welcome to Yiopatre Truck</h2>
+                    <p>Sign in to your account or create a new one</p>
+                </div>
+                <div class="auth-body">
+                    <div class="auth-tabs">
+                        <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                        <button class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <form id="login-form" class="auth-form active">
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" class="form-input" id="login-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-input" id="login-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="remember-me"> Remember me
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                        <p class="text-center mt-20">
+                            <a href="#" style="color: var(--primary);">Forgot your password?</a>
+                        </p>
+                    </form>
+                    
+                    <!-- Signup Form -->
+                    <form id="signup-form" class="auth-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input type="text" class="form-input" id="signup-firstname" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input type="text" class="form-input" id="signup-lastname" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" class="form-input" id="signup-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" class="form-input" id="signup-phone" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-input" id="signup-password" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="password" class="form-input" id="signup-confirm" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="terms" required> I agree to the 
+                                <a href="#" style="color: var(--primary);">Terms & Conditions</a>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-user-plus"></i> Create Account
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========== PROFILE PAGE ========== -->
+    <div id="page-profile" class="page hidden">
+        <section class="section">
+            <div class="container">
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <button class="profile-edit-btn" onclick="toggleProfileEdit()">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                        <div class="profile-avatar" id="profile-avatar">
+                            <!-- Initial will be set by JS -->
+                        </div>
+                        <h1 id="profile-name">John Doe</h1>
+                        <p id="profile-email">john.doe@example.com</p>
+                    </div>
+                    
+                    <div class="profile-content">
+                        <!-- Personal Information Section -->
+                        <div class="profile-section">
+                            <h3><i class="fas fa-user-circle"></i> Personal Information</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Full Name</label>
+                                    <p id="profile-fullname">John Doe</p>
+                                </div>
+                                <div class="info-item">
+                                    <label>Email Address</label>
+                                    <p id="profile-display-email">john.doe@example.com</p>
+                                </div>
+                                <div class="info-item">
+                                    <label>Phone Number</label>
+                                    <p id="profile-phone">+1 (555) 123-4567</p>
+                                </div>
+                                <div class="info-item">
+                                    <label>Member Since</label>
+                                    <p id="profile-joined">March 2024</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Edit Form (Hidden by Default) -->
+                            <div id="edit-personal-form" class="edit-form hidden">
+                                <h4>Edit Personal Information</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>First Name</label>
+                                        <input type="text" class="form-input" id="edit-firstname" value="John">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Last Name</label>
+                                        <input type="text" class="form-input" id="edit-lastname" value="Doe">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" class="form-input" id="edit-email" value="john.doe@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" class="form-input" id="edit-phone" value="+15551234567">
+                                </div>
+                                <div class="form-row">
+                                    <button class="btn btn-primary" onclick="savePersonalInfo()">
+                                        <i class="fas fa-save"></i> Save Changes
+                                    </button>
+                                    <button class="btn btn-outline" onclick="toggleProfileEdit()">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Address Section -->
+                        <div class="profile-section">
+                            <h3><i class="fas fa-map-marker-alt"></i> Shipping Addresses</h3>
+                            <div class="info-grid" id="address-list">
+                                <!-- Addresses will be loaded by JS -->
+                            </div>
+                            <button class="btn btn-outline" onclick="showAddAddressForm()">
+                                <i class="fas fa-plus"></i> Add New Address
+                            </button>
+                        </div>
+                        
+                        <!-- Account Security Section -->
+                        <div class="profile-section">
+                            <h3><i class="fas fa-shield-alt"></i> Account Security</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Password</label>
+                                    <p>••••••••••</p>
+                                    <button class="btn btn-outline mt-10" onclick="showChangePasswordForm()">
+                                        <i class="fas fa-key"></i> Change Password
+                                    </button>
+                                </div>
+                                <div class="info-item">
+                                    <label>Two-Factor Authentication</label>
+                                    <p>Disabled</p>
+                                    <button class="btn btn-outline mt-10">
+                                        <i class="fas fa-mobile-alt"></i> Enable 2FA
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========== HOME PAGE ========== -->
+    <div id="page-home" class="page">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Professional Truck Parts Marketplace</h1>
+                <p>Source genuine parts for heavy-duty vehicles with guaranteed quality, fast shipping, and 24/7 expert support.</p>
+                
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="showPage('products')">
+                        <i class="fas fa-shopping-cart"></i> Shop Now
+                    </button>
+                    <button class="btn btn-secondary" onclick="showPage('categories')">
+                        <i class="fas fa-list"></i> Browse Categories
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Featured Products</h2>
+                <div class="product-grid" id="featured-products">
+                    <!-- Products loaded by JS -->
+                </div>
+                <div class="text-center mt-40">
+                    <button class="btn btn-outline" onclick="showPage('products')">
+                        <i class="fas fa-arrow-right"></i> View All Products
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========== CATEGORIES PAGE ========== -->
+    <div id="page-categories" class="page hidden">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Product Categories</h2>
+                <div class="category-grid" id="all-categories">
+                    <!-- All categories loaded by JS -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========== PRODUCTS PAGE ========== -->
+    <div id="page-products" class="page hidden">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">All Products</h2>
+                
+                <div class="filters-bar">
+                    <div class="filter-group">
+                        <label>Category</label>
+                        <select class="filter-select" id="category-filter" onchange="filterProducts()">
+                            <option value="all">All Categories</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Sort By</label>
+                        <select class="filter-select" id="sort-filter" onchange="sortProducts()">
+                            <option value="featured">Featured</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="name">Name A-Z</option>
+                            <option value="newest">Newest</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Price Range</label>
+                        <div class="price-range">
+                            <input type="number" id="min-price" placeholder="Min" onchange="filterProducts()">
+                            <span>-</span>
+                            <input type="number" id="max-price" placeholder="Max" onchange="filterProducts()">
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Stock Status</label>
+                        <select class="filter-select" id="stock-filter" onchange="filterProducts()">
+                            <option value="all">All Products</option>
+                            <option value="in-stock">In Stock Only</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-outline" onclick="resetFilters()">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+                
+                <div class="product-grid" id="all-products">
+                    <!-- Products loaded by JS -->
+                </div>
+                
+                <div class="pagination" id="pagination">
+                    <!-- Pagination loaded by JS -->
+                </div>
+
+
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ========== PRODUCT DETAIL MODAL ========== -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-product-name"></h3>
+                <button class="modal-close" onclick="closeProductModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-product-content">
+                    <!-- Product details loaded by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== CART PAGE ========== -->
+    <div id="page-cart" class="page hidden">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Your Shopping Cart</h2>
+                
+                <div class="cart-container" id="cart-container">
+                    <!-- Cart content loaded by JS -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========== CHECKOUT PAGE ========== -->
+    <div id="page-checkout" class="page hidden">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Checkout</h2>
+                
+                <div class="checkout-grid">
+                    <div class="checkout-section">
+                        <h3><i class="fas fa-shipping-fast"></i> Shipping Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input type="text" class="form-input" id="first-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input type="text" class="form-input" id="last-name" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" class="form-input" id="checkout-email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" class="form-input" id="checkout-phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input type="text" class="form-input" id="address" placeholder="Street Address" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>City</label>
+                                <input type="text" class="form-input" id="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label>State</label>
+                                <select class="form-input" id="state" required>
+                                    <option value="">Select city</option>
+                                    <option value="CA">Tanger</option>
+                                    <option value="TX">Tetouan</option>
+                                    <option value="NY">Casablanca</option>
+                                    <option value="FL">Rabat</option>
+                                    <option value="IL">Marrakesh</option>
+                                    
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>ZIP Code</label>
+                                <input type="text" class="form-input" id="zip" required>
+                            </div>
+                        </div>
+                        
+                        <h3 class="mt-40 mb-20"><i class="fas fa-truck"></i> Delivery Options</h3>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="delivery" value="standard" checked>
+                                <div>
+                                    <strong>Standard Delivery</strong>
+                                    <p>5-7 business days · Free</p>
+                                </div>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="delivery" value="express">
+                                <div>
+                                    <strong>Express Delivery</strong>
+                                    <p>2-3 business days · $25.00</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="checkout-section">
+                        <h3><i class="fas fa-credit-card"></i> Payment Method</h3>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="payment" value="card" checked>
+                                <div>
+                                    <strong>Credit/Debit Card</strong>
+                                    <p>Pay securely with your card</p>
+                                </div>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="payment" value="paypal">
+                                <div>
+                                    <strong>PayPal</strong>
+                                    <p>Fast and secure payment</p>
+                                </div>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="payment" value="cash">
+                                <div>
+                                    <strong>Cash on Delivery</strong>
+                                    <p>Pay when you receive the order</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div id="card-details" class="mt-40">
+                            <div class="form-group">
+                                <label>Card Number</label>
+                                <input type="text" class="form-input" id="card-number" placeholder="1234 5678 9012 3456">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Expiry Date</label>
+                                    <input type="text" class="form-input" id="card-expiry" placeholder="MM/YY">
+                                </div>
+                                <div class="form-group">
+                                    <label>CVV</label>
+                                    <input type="text" class="form-input" id="card-cvv" placeholder="123">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Name on Card</label>
+                                <input type="text" class="form-input" id="card-name" placeholder="John Doe">
+                            </div>
+                        </div>
+                        
+                        <div class="payment-icons">
+                            <i class="fab fa-cc-visa payment-icon"></i>
+                            <i class="fab fa-cc-mastercard payment-icon"></i>
+                            <i class="fab fa-cc-amex payment-icon"></i>
+                            <i class="fab fa-cc-discover payment-icon"></i>
+                        </div>
+                        
+                        <div class="cart-summary mt-40">
+                            <h3>Order Summary</h3>
+                            <div id="checkout-summary"></div>
+                            <button class="btn btn-success mt-20" style="width: 100%;" onclick="processPayment()">
+                                <i class="fas fa-lock"></i> Complete Order
+                            </button>
+                            <p class="text-center mt-20" style="font-size: 0.9rem; color: var(--gray);">
+                                <i class="fas fa-shield-alt"></i> Your payment is secure and encrypted
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========== ORDER CONFIRMATION ========== -->
+    <div id="page-order-confirm" class="page hidden">
+        <section class="section">
+            <div class="container">
+                <div class="order-confirmation">
+                    <i class="fas fa-check-circle"></i>
+                    <h2>Order Confirmed!</h2>
+                    <p>Thank you for your purchase. Your order has been received and is being processed.</p>
+                    <div class="order-id" id="confirmed-order-id"></div>
+                    <p>You will receive an email confirmation shortly with tracking information.</p>
+                    <div class="mt-40">
+                        <button class="btn btn-primary" onclick="showPage('home')">
+                            <i class="fas fa-home"></i> Back to Home
+                        </button>
+                        <button class="btn btn-outline" onclick="showPage('orders')">
+                            <i class="fas fa-clipboard-list"></i> View Orders
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========== MY ORDERS PAGE ========== -->
+    <div id="page-orders" class="page hidden">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">My Orders</h2>
+                
+                <div class="admin-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table">
+                            <tr>
+                                <td colspan="6" class="text-center" style="padding: 40px;">
+                                    <i class="fas fa-shopping-bag" style="font-size: 3rem; color: var(--gray); margin-bottom: 20px; display: block;"></i>
+                                    <p>No orders yet</p>
+                                    <button class="btn btn-primary mt-20" onclick="showPage('products')">
+                                        <i class="fas fa-shopping-cart"></i> Start Shopping
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========== SUPPORT PAGE ========== -->
+    <div id="page-support" class="page hidden">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Customer Support</h2>
+                
+                <div class="checkout-grid">
+                    <div class="checkout-section">
+                        <h3><i class="fas fa-envelope"></i> Contact Us</h3>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-input" id="support-name">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-input" id="support-email">
+                        </div>
+                        <div class="form-group">
+                            <label>Order Reference (Optional)</label>
+                            <input type="text" class="form-input" id="support-order">
+                        </div>
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <select class="form-input" id="support-subject">
+                                <option value="">Select a subject</option>
+                                <option value="order">Order Issue</option>
+                                <option value="product">Product Question</option>
+                                <option value="shipping">Shipping & Delivery</option>
+                                <option value="return">Returns & Refunds</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea class="form-input" id="support-message" rows="5" placeholder="How can we help you?"></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="submitSupportRequest()">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </div>
+                    
+                    <div class="checkout-section">
+                        <h3><i class="fas fa-question-circle"></i> FAQ</h3>
+                        <div class="faq-list" id="faq-list">
+                            <!-- FAQ loaded by JS -->
+                        </div>
+                        
+                        <h3 class="mt-40"><i class="fas fa-phone-alt"></i> Contact Information</h3>
+                        <div class="mt-20">
+                            <p><i class="fas fa-phone"></i> <strong>Phone:</strong> +1 (555) 123-4567</p>
+                            <p><i class="fas fa-envelope"></i> <strong>Email:</strong> support@yiopatretruck.com</p>
+                            <p><i class="fas fa-clock"></i> <strong>Hours:</strong> Mon-Fri 8AM-8PM EST</p>
+                            <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> 123 Truck Lane, Industrial Park, TX 75001</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========== ADMIN PAGE ========== -->
+    <div id="page-admin" class="page hidden">
+        <section class="section" style="padding: 30px 20px;">
+            <div class="container">
+                <h2 class="section-title" style="margin-bottom: 30px;">Admin Dashboard</h2>
+                
+                <!-- Admin Tabs -->
+                <div style="display: flex; gap: 5px; margin-bottom: 25px; border-bottom: 2px solid var(--border); flex-wrap: wrap;">
+                    <button class="admin-tab active" onclick="switchAdminTab('products')" style="padding: 10px 18px; background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-weight: 700; color: var(--gray); transition: var(--transition); font-size: 0.95rem;">
+                        <i class="fas fa-boxes"></i> Products
+                    </button>
+                    <button class="admin-tab" onclick="switchAdminTab('add')" style="padding: 10px 18px; background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-weight: 700; color: var(--gray); transition: var(--transition); font-size: 0.95rem;">
+                        <i class="fas fa-plus-circle"></i> Add Product
+                    </button>
+                </div>
+
+                <style>
+                    .admin-tab.active {
+                        color: var(--primary) !important;
+                        border-bottom-color: var(--primary) !important;
+                    }
+                </style>
+
+                <!-- Products Tab -->
+                <div id="admin-tab-products" class="admin-tab-content">
+                    <div style="background: white; border-radius: 12px; padding: 20px; box-shadow: var(--shadow-sm);">
+                        <h3 style="color: var(--secondary); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; font-size: 1.1rem;">
+                            <i class="fas fa-list" style="color: var(--primary);"></i> Product List (<span id="product-count">0</span>)
+                        </h3>
+                        
+                        <div id="admin-product-list" style="display: grid; gap: 10px; max-height: 450px; overflow-y: auto;">
+                            <!-- Products loaded by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Product Tab -->
+                <div id="admin-tab-add" class="admin-tab-content" style="display: none;">
+                    <div style="background: white; border-radius: 12px; padding: 20px; box-shadow: var(--shadow-sm);">
+                        <h3 style="color: var(--secondary); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; font-size: 1.1rem;">
+                            <i class="fas fa-plus-circle" style="color: var(--primary);"></i> Add New Product
+                        </h3>
+                        
+                        <form id="admin-product-form" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="admin-name" style="margin-bottom: 5px;">Product Name *</label>
+                                <input type="text" id="admin-name" class="form-input" placeholder="Heavy Duty Air Filter" required>
+                            </div>
+                            
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="admin-ref" style="margin-bottom: 5px;">Reference Code *</label>
+                                <input type="text" id="admin-ref" class="form-input" placeholder="AF-2024-HD" required>
+                            </div>
+                            
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="admin-category" style="margin-bottom: 5px;">Category *</label>
+                                <select id="admin-category" class="form-input" required style="padding: 8px 12px;">
+                                    <option value="">-- Select Category --</option>
+                                    <option value="Filters">Filters</option>
+                                    <option value="Brakes">Brakes</option>
+                                    <option value="Lights">Lights</option>
+                                    <option value="Engine">Engine</option>
+                                    <option value="Transmission">Transmission</option>
+                                    <option value="Suspension">Suspension</option>
+                                    <option value="Electrical">Electrical</option>
+                                    <option value="Cooling">Cooling</option>
+                                    <option value="Fuel System">Fuel System</option>
+                                    <option value="Exhaust">Exhaust</option>
+                                    <option value="Tires">Tires</option>
+                                    <option value="Batteries">Batteries</option>
+                                    <option value="Belts & Hoses">Belts & Hoses</option>
+                                    <option value="Fluids">Fluids</option>
+                                    <option value="Interior">Interior</option>
+                                    <option value="Exterior">Exterior</option>
+                                    <option value="Towing">Towing</option>
+                                    <option value="Tools & Accessories">Tools & Accessories</option>
+                                    <option value="Seals & Gaskets">Seals & Gaskets</option>
+                                    <option value="Steering">Steering</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="admin-price" style="margin-bottom: 5px;">Price ($) *</label>
+                                <input type="number" id="admin-price" class="form-input" placeholder="99.99" min="0" step="0.01" required>
+                            </div>
+                            
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="admin-stock" style="margin-bottom: 5px;">Stock Status *</label>
+                                <select id="admin-stock" class="form-input" required style="padding: 8px 12px;">
+                                    <option value="">-- Select Status --</option>
+                                    <option value="in-stock">In Stock</option>
+                                    <option value="out-of-stock">Out of Stock</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="admin-quantity" style="margin-bottom: 5px;">Quantity *</label>
+                                <input type="number" id="admin-quantity" class="form-input" placeholder="50" min="0" value="0" required>
+                            </div>
+                            
+                            <div class="form-group" style="grid-column: 1 / -1; margin-bottom: 0;">
+                                <label for="admin-image" style="margin-bottom: 5px;">Image URL *</label>
+                                <input type="url" id="admin-image" class="form-input" placeholder="https://example.com/image.jpg" required>
+                            </div>
+                            
+                            <div class="form-group" style="grid-column: 1 / -1; margin-bottom: 0;">
+                                <label for="admin-description" style="margin-bottom: 5px;">Description *</label>
+                                <textarea id="admin-description" class="form-input" placeholder="Product description..." rows="2" required style="padding: 8px 12px; resize: vertical;"></textarea>
+                            </div>
+                            
+                            <div style="grid-column: 1 / -1; display: flex; gap: 8px; flex-wrap: wrap;">
+                                <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.95rem;">
+                                    <i class="fas fa-save"></i> Add
+                                </button>
+                                <button type="reset" class="btn" style="background: var(--gray); color: white; border: none; padding: 10px 20px; font-size: 0.95rem;">
+                                    <i class="fas fa-redo"></i> Clear
+                                </button>
+                            </div>
+                            
+                            <div id="admin-form-msg" style="grid-column: 1 / -1; padding: 10px 12px; border-radius: 8px; display: none; font-size: 0.9rem;"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3>Yiopatre Truck</h3>
+                    <p>Your trusted source for genuine truck parts. We provide reliable parts for heavy-duty vehicles with fast delivery and expert support.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home" onclick="showPage('home')"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#products" onclick="showPage('products')"><i class="fas fa-chevron-right"></i> Products</a></li>
+                        <li><a href="#categories" onclick="showPage('categories')"><i class="fas fa-chevron-right"></i> Categories</a></li>
+                        <li><a href="#support" onclick="showPage('support')"><i class="fas fa-chevron-right"></i> Support</a></li>
+                        <li><a href="#admin" onclick="showPage('admin')"><i class="fas fa-chevron-right"></i> Admin Panel</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Truck Lane, Industrial Park, TX 75001</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> support@yiopatretruck.com</li>
+                        <li><i class="fas fa-clock"></i> Mon-Fri: 8AM-8PM EST</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to get updates on new products and special offers.</p>
+                    <div class="newsletter-form">
+                        <div class="newsletter-input">
+                            <input type="email" placeholder="Your email address">
+                            <button class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Yiopatre Truck. All rights reserved. | <a href="#" style="color: #ccc;">Privacy Policy</a> | <a href="#" style="color: #ccc;">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== JAVASCRIPT ========== -->
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/profile.js"></script>
+    
+    <script>
+        // Debug logging
+        window.addEventListener('load', function() {
+            console.log('Page loaded');
+            console.log('Products:', products);
+            console.log('Products length:', products.length);
+            console.log('Featured products:', products.filter(p => p.featured));
+            const container = document.getElementById('featured-products');
+            console.log('Featured container:', container);
+            console.log('Container children:', container ? container.children.length : 'not found');
+        });
+    </script>
+</body>
+</html>

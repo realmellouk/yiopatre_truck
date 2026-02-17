@@ -1,0 +1,166 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Filters",
+      "image": "images/categories/filters.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Brakes",
+      "image": "images/categories/brakes.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Lights",
+      "image": "images/categories/lights.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Batteries",
+      "image": "images/categories/batteries.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Suspension",
+      "image": "images/categories/suspension.jpg"
+    },
+    {
+      "id": 6,
+      "name": "Exhaust",
+      "image": "images/categories/exhaust.jpg"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Brake Disc Set",
+      "ref": "BD-3045-PRO",
+      "category": "Brakes",
+      "brand": "Brembo",
+      "price": 249.99,
+      "stock": 18,
+      "featured": true,
+      "image": "images/products/brake-disc-set.jpg",
+      "description": "High-performance brake disc set for heavy-duty trucks. Excellent heat dissipation and long service life.",
+      "warranty": 24
+    },
+    {
+      "id": 2,
+      "name": "Air Brake Compressor",
+      "ref": "AB-COMP-911",
+      "category": "Brakes",
+      "brand": "Knorr-Bremse",
+      "price": 689.00,
+      "stock": 7,
+      "featured": false,
+      "image": "images/products/air-brake-compressor.jpg",
+      "description": "OEM-grade air brake compressor designed for long-haul trucks and buses.",
+      "warranty": 12
+    },
+    {
+      "id": 3,
+      "name": "Clutch Kit",
+      "ref": "CK-430E-HD",
+      "category": "Transmission",
+      "brand": "Sachs",
+      "price": 799.50,
+      "stock": 6,
+      "featured": true,
+      "image": "images/products/clutch-kit.jpg",
+      "description": "Heavy-duty clutch kit including pressure plate, disc, and release bearing.",
+      "warranty": 18
+    },
+    {
+      "id": 4,
+      "name": "Turbocharger",
+      "ref": "TC-HX55",
+      "category": "Engine",
+      "brand": "Holset",
+      "price": 1450.00,
+      "stock": 4,
+      "featured": true,
+      "image": "images/products/turbocharger.jpg",
+      "description": "High-efficiency turbocharger for diesel truck engines. Improves power and fuel economy.",
+      "warranty": 12
+    },
+    {
+      "id": 5,
+      "name": "Cylinder Liner",
+      "ref": "CL-131MM",
+      "category": "Engine",
+      "brand": "Mahle",
+      "price": 189.99,
+      "stock": 22,
+      "featured": false,
+      "image": "images/products/cylinder-liner.jpg",
+      "description": "Precision-engineered cylinder liner suitable for heavy-duty diesel engines.",
+      "warranty": 12
+    },
+    {
+      "id": 6,
+      "name": "Fuel Injection Pump",
+      "ref": "FIP-CP3",
+      "category": "Fuel System",
+      "brand": "Bosch",
+      "price": 1120.00,
+      "stock": 5,
+      "featured": true,
+      "image": "images/products/fuel-injection-pump.jpg",
+      "description": "Common rail fuel injection pump delivering high pressure and reliable performance.",
+      "warranty": 12
+    },
+    {
+      "id": 7,
+      "name": "Air Filter",
+      "ref": "AF-HD900",
+      "category": "Filters",
+      "brand": "MANN-FILTER",
+      "price": 59.90,
+      "stock": 40,
+      "featured": false,
+      "image": "images/products/air-filter.jpg",
+      "description": "Heavy-duty air filter providing maximum engine protection in dusty environments.",
+      "warranty": 6
+    },
+    {
+      "id": 8,
+      "name": "Shock Absorber",
+      "ref": "SA-HD45",
+      "category": "Suspension",
+      "brand": "Monroe",
+      "price": 129.99,
+      "stock": 20,
+      "featured": false,
+      "image": "images/products/shock-absorber.jpg",
+      "description": "Heavy-duty shock absorber designed for improved stability and ride comfort.",
+      "warranty": 24
+    },
+    {
+      "id": 9,
+      "name": "Alternator",
+      "ref": "ALT-150A-24V",
+      "category": "Electrical",
+      "brand": "Valeo",
+      "price": 399.00,
+      "stock": 9,
+      "featured": true,
+      "image": "images/products/alternator.jpg",
+      "description": "24V high-output alternator for trucks and commercial vehicles.",
+      "warranty": 18
+    },
+    {
+      "id": 10,
+      "name": "Radiator",
+      "ref": "RAD-HD1200",
+      "category": "Cooling System",
+      "brand": "Behr",
+      "price": 520.00,
+      "stock": 8,
+      "featured": false,
+      "image": "images/products/radiator.jpg",
+      "description": "Aluminum heavy-duty radiator ensuring optimal engine cooling under extreme conditions.",
+      "warranty": 12
+    }
+  ]
+}
