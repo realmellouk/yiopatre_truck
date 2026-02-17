@@ -64,20 +64,16 @@ function loadFromLocalStorage() {
         localStorage.setItem('yiopatre-users', JSON.stringify(users));
     }
 
-    // Load products
-    const savedProducts = localStorage.getItem('yiopatre-products');
-    if (savedProducts) {
-        products = JSON.parse(savedProducts);
-        console.log('Loaded products from localStorage:', products.length);
-    } else {
-        console.log('No products in localStorage');
-    }
+    // FIX: Always skip cached products so addSampleProducts() in products.js
+    // loads the correct paths on every visit — no stale data survives
+    localStorage.removeItem('yiopatre-products');
+    console.log('Product cache cleared — fresh load from products.js');
 
-    // Load cart
+    // Load cart (safe to keep cached)
     const savedCart = localStorage.getItem('yiopatre-cart');
     if (savedCart) {
         cart = JSON.parse(savedCart);
-        updateCartCount();
+        // NOTE: updateCartCount() is in cart.js — only call it after DOM is ready
         console.log('Loaded cart:', cart.length, 'items');
     }
 
@@ -138,102 +134,39 @@ function clearAndReset() {
 
 async function initializeData() {
     console.log('Initializing data...');
+
+    // FIX: loadFromLocalStorage is called ONCE here only.
+    // The bare loadFromLocalStorage() call at the bottom of the file
+    // was removed — it ran before cart.js loaded, causing
+    // "updateCartCount is not defined" errors.
     loadFromLocalStorage();
 
-    if (products.length === 0) {
-        console.log('No products found, loading fallbacks...');
-        products = getFallbackProducts();
-        saveToLocalStorage();
-    }
+    // FIX: No fallback products — products.js handles seeding via
+    // addSampleProducts() in its own DOMContentLoaded listener.
+    // getFallbackProducts() used placeholder.com URLs that are
+    // blocked on Vercel and had no real images.
 
     categories = [
-        { id: 'Filters',      name: 'Filters',      icon: 'fas fa-filter',   count: 0 },
-        { id: 'Brakes',       name: 'Brakes',        icon: 'fas fa-stop',     count: 0 },
-        { id: 'Lights',       name: 'Lights',        icon: 'fas fa-lightbulb',count: 0 },
-        { id: 'Engine',       name: 'Engine',        icon: 'fas fa-cog',      count: 0 },
-        { id: 'Transmission', name: 'Transmission',  icon: 'fas fa-gears',    count: 0 },
-        { id: 'Suspension',   name: 'Suspension',    icon: 'fas fa-square',   count: 0 },
-        { id: 'Electrical',   name: 'Electrical',    icon: 'fas fa-bolt',     count: 0 },
-        { id: 'Cooling',      name: 'Cooling',       icon: 'fas fa-snowflake',count: 0 },
-        { id: 'Fuel System',  name: 'Fuel System',   icon: 'fas fa-gas-pump', count: 0 },
-        { id: 'Exhaust',      name: 'Exhaust',       icon: 'fas fa-wind',     count: 0 }
+        { id: 'Filters',      name: 'Filters',      icon: 'fas fa-filter',    count: 0 },
+        { id: 'Brakes',       name: 'Brakes',        icon: 'fas fa-stop',      count: 0 },
+        { id: 'Lights',       name: 'Lights',        icon: 'fas fa-lightbulb', count: 0 },
+        { id: 'Engine',       name: 'Engine',        icon: 'fas fa-cog',       count: 0 },
+        { id: 'Transmission', name: 'Transmission',  icon: 'fas fa-gears',     count: 0 },
+        { id: 'Suspension',   name: 'Suspension',    icon: 'fas fa-square',    count: 0 },
+        { id: 'Electrical',   name: 'Electrical',    icon: 'fas fa-bolt',      count: 0 },
+        { id: 'Cooling',      name: 'Cooling',       icon: 'fas fa-snowflake', count: 0 },
+        { id: 'Fuel System',  name: 'Fuel System',   icon: 'fas fa-gas-pump',  count: 0 },
+        { id: 'Exhaust',      name: 'Exhaust',       icon: 'fas fa-wind',      count: 0 }
     ];
 
     updateCategoryCounts();
     updateAuthUI();
 
+    // Now that DOM + all scripts are loaded, sync the cart badge
+    if (typeof updateCartCount === 'function') updateCartCount();
+
     console.log('=== INITIALIZE DATA COMPLETE ===');
     console.log('Final products count:', products.length);
-}
-
-function getFallbackProducts() {
-    return [
-        {
-            id: 1,
-            name: "Heavy Duty Air Filter",
-            ref: "AF-HD900",
-            category: "Filters",
-            brand: "MANN-FILTER",
-            price: 59.90,
-            stock: 40,
-            featured: true,
-            image: "https://via.placeholder.com/300x200/C00000/ffffff?text=Air+Filter",
-            description: "Heavy-duty air filter providing maximum engine protection.",
-            warranty: 6
-        },
-        {
-            id: 2,
-            name: "Premium Brake Discs",
-            ref: "BD-PRO-500",
-            category: "Brakes",
-            brand: "Brembo",
-            price: 299.99,
-            stock: 15,
-            featured: true,
-            image: "https://via.placeholder.com/300x200/2C3E50/ffffff?text=Brake+Discs",
-            description: "High-performance brake discs for commercial vehicles.",
-            warranty: 24
-        },
-        {
-            id: 3,
-            name: "LED Headlight Kit",
-            ref: "LED-HL9000",
-            category: "Lights",
-            brand: "Philips",
-            price: 149.99,
-            stock: 30,
-            featured: true,
-            image: "https://via.placeholder.com/300x200/FFB399/000000?text=LED+Headlights",
-            description: "Bright LED headlights for improved night visibility.",
-            warranty: 18
-        },
-        {
-            id: 4,
-            name: "Brake Pad Set",
-            ref: "BP-HD880",
-            category: "Brakes",
-            brand: "Meritor",
-            price: 189.99,
-            stock: 25,
-            featured: false,
-            image: "https://via.placeholder.com/300x200/E74C3C/ffffff?text=Brake+Pads",
-            description: "Heavy-duty brake pads for commercial trucks.",
-            warranty: 12
-        },
-        {
-            id: 5,
-            name: "Shock Absorber",
-            ref: "SA-HD45",
-            category: "Suspension",
-            brand: "Monroe",
-            price: 129.99,
-            stock: 20,
-            featured: false,
-            image: "https://via.placeholder.com/300x200/2ECC71/000000?text=Shock+Absorber",
-            description: "Heavy-duty shock absorber for improved ride comfort.",
-            warranty: 24
-        }
-    ];
 }
 
 // ========== LOCAL STORAGE ==========
@@ -275,16 +208,16 @@ function showPage(pageId) {
     window.location.hash = pageId;
 
     switch (pageId) {
-        case 'home':       loadFeaturedProducts(); loadCategories();       break;
+        case 'home':       loadFeaturedProducts(); loadCategories();         break;
         case 'products':   loadAllProducts();      populateCategoryFilter(); break;
-        case 'categories': loadAllCategories();                            break;
-        case 'cart':       displayCartItems();                             break;
-        case 'checkout':   displayCheckoutSummary(); setupPaymentToggle(); break;
-        case 'orders':     loadUserOrders();                               break;
-        case 'support':    loadFAQ();                                      break;
-        case 'auth':       switchAuthTab('login');                         break;
-        case 'profile':    if (isLoggedIn()) loadProfileInfo();            break;
-        case 'admin':      if (isAdmin())    loadAdminProductList();       break;
+        case 'categories': loadAllCategories();                              break;
+        case 'cart':       displayCartItems();                               break;
+        case 'checkout':   displayCheckoutSummary(); setupPaymentToggle();   break;
+        case 'orders':     loadUserOrders();                                 break;
+        case 'support':    loadFAQ();                                        break;
+        case 'auth':       switchAuthTab('login');                           break;
+        case 'profile':    if (isLoggedIn()) loadProfileInfo();              break;
+        case 'admin':      if (isAdmin())    loadAdminProductList();         break;
     }
 
     window.scrollTo(0, 0);
@@ -361,20 +294,20 @@ function loadAdminProductList() {
 
 function submitProduct(e) {
     e.preventDefault();
-    const formMsg    = document.getElementById('admin-form-msg');
-    const name       = document.getElementById('admin-name').value.trim();
-    const ref        = document.getElementById('admin-ref').value.trim();
-    const category   = document.getElementById('admin-category').value;
-    const price      = parseFloat(document.getElementById('admin-price').value);
-    const quantity   = parseInt(document.getElementById('admin-quantity').value);
-    const image      = document.getElementById('admin-image').value.trim();
-    const description= document.getElementById('admin-description').value.trim();
+    const formMsg     = document.getElementById('admin-form-msg');
+    const name        = document.getElementById('admin-name').value.trim();
+    const ref         = document.getElementById('admin-ref').value.trim();
+    const category    = document.getElementById('admin-category').value;
+    const price       = parseFloat(document.getElementById('admin-price').value);
+    const quantity    = parseInt(document.getElementById('admin-quantity').value);
+    const image       = document.getElementById('admin-image').value.trim();
+    const description = document.getElementById('admin-description').value.trim();
 
     if (!name || !ref || !category || !price || !image || !description) {
         showFormMessage(formMsg, 'Please fill in all required fields', 'error'); return;
     }
-    if (price <= 0)    { showFormMessage(formMsg, 'Price must be greater than 0', 'error'); return; }
-    if (quantity < 0)  { showFormMessage(formMsg, 'Quantity cannot be negative', 'error');  return; }
+    if (price <= 0)   { showFormMessage(formMsg, 'Price must be greater than 0', 'error'); return; }
+    if (quantity < 0) { showFormMessage(formMsg, 'Quantity cannot be negative', 'error');  return; }
 
     const newProduct = {
         id: Math.max(...products.map(p => p.id), 0) + 1,
@@ -433,21 +366,18 @@ function updateCategoryCounts() {
 
 // ========== SCROLL-HIDE NAVBAR ==========
 (function initScrollHide() {
-    const header    = document.querySelector('.header');
-    let lastScroll  = 0;
-    const THRESHOLD = 80; // px below top where hiding kicks in
+    const header   = document.querySelector('.header');
+    let lastScroll = 0;
+    const THRESHOLD = 80;
 
     window.addEventListener('scroll', () => {
         const currentScroll = window.scrollY;
 
         if (currentScroll <= THRESHOLD) {
-            // Always visible near the top
             header.classList.remove('header-hidden');
         } else if (currentScroll > lastScroll + 4) {
-            // Scrolling DOWN (4px deadzone prevents jitter)
             header.classList.add('header-hidden');
         } else if (currentScroll < lastScroll - 4) {
-            // Scrolling UP
             header.classList.remove('header-hidden');
         }
 
@@ -456,6 +386,10 @@ function updateCategoryCounts() {
 })();
 
 // ========== INITIALIZATION ==========
+// initializeData runs once when the DOM + all scripts are ready.
+// FIX: The duplicate bare loadFromLocalStorage() call that used to sit
+// here has been REMOVED. It ran before cart.js was parsed, causing:
+//   "ReferenceError: updateCartCount is not defined"
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeData);
 } else {
@@ -468,9 +402,6 @@ window.onhashchange = function () {
     const hash = window.location.hash.substring(1);
     if (hash) showPage(hash);
 };
-
-// Load data immediately so other scripts can access it
-loadFromLocalStorage();
 
 // ========== GLOBAL EXPORTS ==========
 window.updateCategoryCounts = updateCategoryCounts;
