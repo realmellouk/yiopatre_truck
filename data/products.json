@@ -1,34 +1,34 @@
 {
-  "categories": [
+  "images/": [
     {
       "id": 1,
       "name": "Filters",
-      "image": "images/categories/filters.jpg"
+      "image": "images/images//filters.jpg"
     },
     {
       "id": 2,
       "name": "Brakes",
-      "image": "categories/brakes.jpg"
+      "image": "images/categories/brakes.jpg"
     },
     {
       "id": 3,
       "name": "Lights",
-      "image": "categories/lights.jpg"
+      "image": "images//lights.jpg"
     },
     {
       "id": 4,
       "name": "Batteries",
-      "image": "categories/batteries.jpg"
+      "image": "images//batteries.jpg"
     },
     {
       "id": 5,
       "name": "Suspension",
-      "image": "categories/suspension.jpg"
+      "image": "images//suspension.jpg"
     },
     {
       "id": 6,
       "name": "Exhaust",
-      "image": "categories/exhaust.jpg"
+      "image": "images//exhaust.jpg"
     }
   ],
   "products": [
