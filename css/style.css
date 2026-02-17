@@ -529,7 +529,7 @@ body {
     content: '';
     position: absolute;
     inset: 0;
-    background: url('../public/images/background.jpeg') center/cover no-repeat;
+    background: url('../images/background.jpeg') center/cover no-repeat;
     opacity: 0.12;
 }
 
