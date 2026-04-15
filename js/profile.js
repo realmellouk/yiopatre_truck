@@ -72,7 +72,7 @@ function loadAddresses() {
         addressList.innerHTML = `
             <div style="grid-column: 1/-1; text-align: center; padding: 20px;">
                 <i class="fas fa-map-marker-alt" style="font-size: 2rem; color: var(--gray);"></i>
-                <p>No addresses saved yet</p>
+                <p>${t('no_addresses')}</p>
             </div>
         `;
         return;

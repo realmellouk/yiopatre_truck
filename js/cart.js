@@ -40,10 +40,10 @@ function displayCartItems() {
         container.innerHTML = `
             <div class="cart-empty">
                 <i class="fas fa-shopping-cart"></i>
-                <h3>Your cart is empty</h3>
-                <p>Add some products to get started</p>
+                <h3>${t('cart_empty_title')}</h3>
+                <p>${t('cart_empty_subtitle')}</p>
                 <button class="btn btn-primary mt-20" onclick="showPage('products')">
-                    <i class="fas fa-shopping-cart"></i> Browse Products
+                    <i class="fas fa-shopping-cart"></i> ${t('btn_browse_products')}
                 </button>
             </div>
         `;
@@ -62,8 +62,8 @@ function displayCartItems() {
                 <img src="${item.image}" alt="${item.name}" class="cart-item-image" onclick="showProductDetail(${item.id})" style="cursor: pointer;">
                 <div>
                     <h3 onclick="showProductDetail(${item.id})" style="cursor: pointer;">${item.name}</h3>
-                    <p>Ref: ${item.ref}</p>
-                    <p>${item.price.toFixed(2)} MAD each</p>
+                    <p>${t('label_ref')}: ${item.ref}</p>
+                    <p>${item.price.toFixed(2)} MAD ${t('label_each')}</p>
                 </div>
                 <div class="quantity-controls">
                     <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">
@@ -90,22 +90,22 @@ function displayCartItems() {
     cartHTML += `
         <div class="cart-summary">
             <div class="summary-row">
-                <span>Subtotal:</span>
+                <span>${t('label_subtotal')}</span>
                 <span>${subtotal.toFixed(2)} MAD</span>
             </div>
             <div class="summary-row">
-                <span>Tax (8%):</span>
+                <span>${t('label_tax')}</span>
                 <span>${tax.toFixed(2)} MAD</span>
             </div>
             <div class="summary-row summary-total">
-                <span>Total:</span>
+                <span>${t('label_total')}</span>
                 <span>${total.toFixed(2)} MAD</span>
             </div>
             <button class="btn btn-primary mt-20" style="width: 100%;" onclick="showPage('checkout')">
-                <i class="fas fa-lock"></i> Proceed to Checkout
+                <i class="fas fa-lock"></i> ${t('btn_checkout')}
             </button>
             <button class="btn btn-outline mt-10" style="width: 100%;" onclick="showPage('products')">
-                <i class="fas fa-arrow-left"></i> Continue Shopping
+                <i class="fas fa-arrow-left"></i> ${t('btn_continue_shopping')}
             </button>
         </div>
     `;

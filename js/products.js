@@ -9,7 +9,7 @@ function loadFeaturedProducts() {
     console.log('Total products available:', products.length);
 
     if (!products || products.length === 0) {
-        featuredContainer.innerHTML = '<p>No products available. Please check data loading.</p>';
+        featuredContainer.innerHTML = '<p>' + t('no_products_available') + '</p>';
         return;
     }
 
@@ -22,7 +22,7 @@ function loadFeaturedProducts() {
     });
 
     if (featuredProducts.length === 0) {
-        featuredContainer.innerHTML = '<p>No featured products available.</p>';
+        featuredContainer.innerHTML = '<p>' + t('no_featured_products') + '</p>';
     }
 }
 
@@ -37,8 +37,8 @@ function loadAllProducts(filteredProducts = null) {
         productsContainer.innerHTML = `
             <div class="text-center" style="grid-column: 1/-1; padding: 60px 20px;">
                 <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 20px;"></i>
-                <h3>No products found</h3>
-                <p>Try adjusting your filters or search terms</p>
+                <h3>${t('no_products_found')}</h3>
+                <p>${t('no_products_hint')}</p>
             </div>
         `;
         return;
@@ -53,17 +53,17 @@ function createProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
 
-    const stockStatus = product.stock > 10 ? 'In Stock' : product.stock > 0 ? 'Low Stock' : 'Out of Stock';
+    const stockStatus = product.stock > 10 ? t('stock_in') : product.stock > 0 ? t('stock_low') : t('stock_out');
     const stockClass = product.stock > 10 ? 'stock-in' : product.stock > 0 ? 'stock-low' : 'stock-out';
 
     card.innerHTML = `
-        ${product.featured ? '<span class="product-badge">Featured</span>' : ''}
+        ${product.featured ? '<span class="product-badge">' + t('badge_featured') + '</span>' : ''}
         <img src="${product.image}" alt="${product.name}" class="product-image" onclick="showProductDetail(${product.id})">
         <div class="product-info">
             <div class="product-header">
                 <div>
                     <h3 class="product-name" onclick="showProductDetail(${product.id})" style="cursor: pointer;">${product.name}</h3>
-                    <p class="product-ref">Ref: ${product.ref}</p>
+                    <p class="product-ref">${t('label_ref')}: ${product.ref}</p>
                 </div>
                 <div class="stock-status ${stockClass}">
                     <i class="fas fa-${product.stock > 0 ? 'check' : 'times'}"></i>
@@ -78,7 +78,7 @@ function createProductCard(product) {
                     <small>${product.brand || ''}</small>
                 </div>
                 <button class="btn-add-cart" onclick="addToCart(${product.id})" ${product.stock === 0 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
-                    <i class="fas fa-cart-plus"></i> Add
+                    <i class="fas fa-cart-plus"></i> ${t('btn_add_to_cart')}
                 </button>
             </div>
         </div>
@@ -102,7 +102,7 @@ function loadCategories() {
                 <i class="${category.icon}"></i>
             </div>
             <h3>${category.name}</h3>
-            <p>${category.count} products</p>
+            <p>${category.count} ${t('products_suffix')}</p>
         `;
         card.onclick = () => {
             showPage('products');
@@ -139,7 +139,7 @@ function loadAllCategories() {
                 <i class="${category.icon}"></i>
             </div>
             <h3>${category.name}</h3>
-            <p>${category.count} products</p>
+            <p>${category.count} ${t('products_suffix')}</p>
         `;
         card.onclick = () => {
             showPage('products');
@@ -160,7 +160,7 @@ function populateCategoryFilter() {
     const filter = document.getElementById('category-filter');
     if (!filter) return;
 
-    filter.innerHTML = '<option value="all">All Categories</option>';
+    filter.innerHTML = '<option value="all">' + t('filter_all_categories') + '</option>';
 
     const uniqueCategories = [];
     products.forEach(product => {
@@ -247,7 +247,7 @@ function showProductDetail(productId) {
 
     name.textContent = product.name;
 
-    const stockStatus = product.stock > 10 ? 'In Stock' : product.stock > 0 ? 'Low Stock' : 'Out of Stock';
+    const stockStatus = product.stock > 10 ? t('stock_in') : product.stock > 0 ? t('stock_low') : t('stock_out');
     const stockClass = product.stock > 10 ? 'stock-in' : product.stock > 0 ? 'stock-low' : 'stock-out';
 
     content.innerHTML = `
@@ -259,21 +259,21 @@ function showProductDetail(productId) {
                 <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
                     <h3>${product.price.toFixed(2)} MAD</h3>
                     <p class="${stockClass}"><i class="fas fa-${product.stock > 0 ? 'check' : 'times'}"></i> ${stockStatus}</p>
-                    <p><strong>Reference:</strong> ${product.ref}</p>
-                    <p><strong>Brand:</strong> ${product.brand || 'N/A'}</p>
-                    <p><strong>Category:</strong> ${product.category}</p>
-                    ${product.warranty ? `<p><strong>Warranty:</strong> ${product.warranty} months</p>` : ''}
+                    <p><strong>${t('label_reference')}</strong> ${product.ref}</p>
+                    <p><strong>${t('label_brand')}</strong> ${product.brand || 'N/A'}</p>
+                    <p><strong>${t('label_category')}</strong> ${product.category}</p>
+                    ${product.warranty ? `<p><strong>${t('label_warranty')}</strong> ${product.warranty} ${t('warranty_months')}</p>` : ''}
                 </div>
                 <div style="margin-bottom: 20px;">
-                    <h4>Description</h4>
+                    <h4>${t('label_description')}</h4>
                     <p>${product.description}</p>
                 </div>
                 <div style="display: flex; gap: 10px;">
                     <button class="btn btn-primary" style="flex: 1;" onclick="addToCart(${product.id}); closeProductModal();" ${product.stock === 0 ? 'disabled' : ''}>
-                        <i class="fas fa-cart-plus"></i> Add to Cart
+                        <i class="fas fa-cart-plus"></i> ${t('btn_add_cart_detail')}
                     </button>
                     <button class="btn btn-outline" onclick="closeProductModal()">
-                        <i class="fas fa-times"></i> Close
+                        <i class="fas fa-times"></i> ${t('btn_close')}
                     </button>
                 </div>
             </div>

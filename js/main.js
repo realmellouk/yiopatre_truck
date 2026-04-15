@@ -267,7 +267,7 @@ function loadAdminProductList() {
             <div style="flex:1;">
                 <div style="font-weight:600;color:var(--secondary);font-size:1.1rem;">${product.name}</div>
                 <div style="font-size:0.85rem;color:var(--gray);margin-top:5px;">
-                    Ref: ${product.ref} | Category: ${product.category} | Stock: ${product.stock}
+                    ${t('label_ref')}: ${product.ref} | ${t('label_category')}: ${product.category} | Stock: ${product.stock}
                 </div>
                 <div style="font-size:0.95rem;color:var(--primary);font-weight:700;margin-top:5px;">
                     ${product.price.toFixed(2)} MAD
@@ -275,10 +275,10 @@ function loadAdminProductList() {
             </div>
             <div style="display:flex;gap:8px;">
                 <button class="btn btn-secondary" onclick="editProduct(${product.id})" style="padding:6px 12px;font-size:0.85rem;">
-                    <i class="fas fa-edit"></i> Edit
+                    <i class="fas fa-edit"></i> ${t('btn_edit')}
                 </button>
                 <button class="btn" style="background:var(--danger);color:white;border:none;padding:6px 12px;font-size:0.85rem;cursor:pointer;border-radius:30px;" onclick="deleteProduct(${product.id})">
-                    <i class="fas fa-trash"></i> Delete
+                    <i class="fas fa-trash"></i> ${t('btn_delete')}
                 </button>
             </div>
         `;

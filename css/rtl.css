@@ -1,0 +1,303 @@
+/* ========== RTL SUPPORT FOR ARABIC ========== */
+
+/* Only apply when html[dir="rtl"] */
+
+html[dir="rtl"] {
+    direction: rtl;
+}
+
+/* ---- Typography ---- */
+html[dir="rtl"] body {
+    text-align: right;
+}
+
+/* ---- Header ---- */
+html[dir="rtl"] .header-content {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .header-actions {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .nav {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .search-bar {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .search-bar input {
+    text-align: right;
+}
+
+html[dir="rtl"] .search-bar button {
+    border-radius: 30px 0 0 30px;
+}
+
+html[dir="rtl"] .search-bar input[type="text"] {
+    border-radius: 0 30px 30px 0;
+}
+
+/* ---- User menu ---- */
+html[dir="rtl"] .user-dropdown {
+    right: auto;
+    left: 0;
+}
+
+/* ---- Auth buttons ---- */
+html[dir="rtl"] .auth-buttons {
+    flex-direction: row-reverse;
+}
+
+/* ---- Cart icon badge ---- */
+html[dir="rtl"] .cart-badge {
+    right: auto;
+    left: -8px;
+}
+
+/* ---- Alert / Notification ---- */
+html[dir="rtl"] .alert {
+    right: auto !important;
+    left: 20px !important;
+}
+
+/* ---- Hero ---- */
+html[dir="rtl"] .hero-content {
+    text-align: right;
+}
+
+html[dir="rtl"] .hero-buttons {
+    justify-content: flex-end;
+}
+
+/* ---- Product cards ---- */
+html[dir="rtl"] .product-info {
+    text-align: right;
+}
+
+html[dir="rtl"] .product-header {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .product-footer {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .product-badge {
+    left: auto;
+    right: 10px;
+}
+
+/* ---- Filters bar ---- */
+html[dir="rtl"] .filters-bar {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .filter-group {
+    text-align: right;
+}
+
+html[dir="rtl"] .filter-select {
+    text-align: right;
+}
+
+/* ---- Category cards ---- */
+html[dir="rtl"] .category-card {
+    text-align: right;
+}
+
+/* ---- Cart items ---- */
+html[dir="rtl"] .cart-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+html[dir="rtl"] .quantity-controls {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .cart-summary .summary-row {
+    flex-direction: row-reverse;
+}
+
+/* ---- Cart empty state ---- */
+html[dir="rtl"] .cart-empty {
+    text-align: right;
+}
+
+/* ---- Checkout ---- */
+html[dir="rtl"] .checkout-grid {
+    direction: rtl;
+}
+
+html[dir="rtl"] .form-row {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .form-input {
+    text-align: right;
+}
+
+html[dir="rtl"] .radio-option {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+html[dir="rtl"] .radio-option div {
+    text-align: right;
+}
+
+/* ---- Profile ---- */
+html[dir="rtl"] .profile-edit-btn {
+    left: 20px;
+    right: auto;
+}
+
+html[dir="rtl"] .profile-section {
+    text-align: right;
+}
+
+html[dir="rtl"] .info-grid {
+    text-align: right;
+}
+
+/* ---- Orders table ---- */
+html[dir="rtl"] .admin-table {
+    text-align: right;
+}
+
+html[dir="rtl"] .admin-table th,
+html[dir="rtl"] .admin-table td {
+    text-align: right;
+}
+
+/* ---- Admin ---- */
+html[dir="rtl"] #admin-product-form {
+    text-align: right;
+}
+
+html[dir="rtl"] #admin-product-list > div {
+    flex-direction: row-reverse;
+}
+
+/* ---- Footer ---- */
+html[dir="rtl"] .footer {
+    text-align: right;
+}
+
+html[dir="rtl"] .footer-grid {
+    direction: rtl;
+}
+
+html[dir="rtl"] .footer-links li {
+    text-align: right;
+}
+
+html[dir="rtl"] .footer-links i.fas {
+    margin-right: 0;
+    margin-left: 8px;
+}
+
+html[dir="rtl"] .social-links {
+    justify-content: flex-start;
+}
+
+html[dir="rtl"] .newsletter-input {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .newsletter-input input {
+    text-align: right;
+    border-radius: 0 30px 30px 0;
+}
+
+html[dir="rtl"] .newsletter-input button {
+    border-radius: 30px 0 0 30px;
+}
+
+html[dir="rtl"] .footer-bottom {
+    text-align: center;
+}
+
+/* ---- Modal ---- */
+html[dir="rtl"] .modal-header {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .modal-body {
+    text-align: right;
+}
+
+/* ---- Section titles ---- */
+html[dir="rtl"] .section-title {
+    text-align: center;
+}
+
+/* ---- Language Switcher ---- */
+.lang-switcher {
+    display: flex;
+    align-items: center;
+}
+
+.lang-switcher select {
+    background: transparent;
+    border: 2px solid var(--border, #ddd);
+    border-radius: 8px;
+    padding: 5px 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: white;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: auto;
+    appearance: auto;
+}
+
+.lang-switcher select option {
+    background: black;
+    color: white;
+}
+
+.lang-switcher select:hover,
+.lang-switcher select:focus {
+    border-color: var(--primary, #ff6b35);
+}
+
+/* ---- Mobile adjustments for RTL ---- */
+@media (max-width: 768px) {
+    html[dir="rtl"] .nav.active {
+        text-align: right;
+    }
+
+    html[dir="rtl"] .header-content {
+        flex-wrap: wrap;
+    }
+
+    html[dir="rtl"] .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+
+    html[dir="rtl"] .form-row {
+        flex-direction: column;
+    }
+
+    html[dir="rtl"] .cart-item {
+        flex-wrap: wrap;
+    }
+}
+
+/* ---- Ensure icons don't flip in RTL ---- */
+html[dir="rtl"] .fas,
+html[dir="rtl"] .fab,
+html[dir="rtl"] .far {
+    direction: ltr;
+    display: inline-block;
+}
+
+/* ---- Fix chevron direction in RTL footer links ---- */
+html[dir="rtl"] .footer-links .fa-chevron-right::before {
+    content: "\f053"; /* fa-chevron-left */
+}
