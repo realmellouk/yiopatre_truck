@@ -236,6 +236,102 @@ function searchProducts() {
     loadAllProducts(filtered);
 }
 
+// ========== REVIEWS HELPERS ==========
+function getReviews(productId) {
+    try { return JSON.parse(localStorage.getItem('reviews_' + productId) || '[]'); }
+    catch(e) { return []; }
+}
+
+function saveReview(productId, review) {
+    const reviews = getReviews(productId);
+    reviews.unshift(review);
+    localStorage.setItem('reviews_' + productId, JSON.stringify(reviews));
+}
+
+function renderStars(rating, size) {
+    let html = '';
+    for (let i = 1; i <= 5; i++) {
+        html += `<i class="fas fa-star star-icon${i > rating ? ' empty' : ''}" style="font-size:${size || '0.9rem'}"></i>`;
+    }
+    return html;
+}
+
+function renderReviewsSection(productId) {
+    const reviews = getReviews(productId);
+    const avg = reviews.length ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : null;
+    const countLabel = reviews.length === 1 ? t('reviews_count_single') : t('reviews_count_plural');
+
+    const summaryHTML = avg ? `
+        <div class="reviews-summary">
+            <div class="reviews-avg-score">${avg}</div>
+            <div>
+                <div class="reviews-avg-stars">${renderStars(Math.round(avg), '1.1rem')}</div>
+                <div class="reviews-count">${reviews.length} ${countLabel}</div>
+            </div>
+        </div>` : '';
+
+    const listHTML = reviews.length === 0
+        ? `<div class="no-reviews"><i class="fas fa-comment-slash" style="margin-right:6px"></i>${t('reviews_no')}</div>`
+        : `<div class="review-list" id="review-list-${productId}">
+            ${reviews.map(r => `
+                <div class="review-item">
+                    <div class="review-item-header">
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <span class="review-author"><i class="fas fa-user-circle" style="color:var(--primary)"></i> ${r.author}</span>
+                            <div class="review-stars">${renderStars(r.rating)}</div>
+                        </div>
+                        <span class="review-date">${r.date}</span>
+                    </div>
+                    <p class="review-text">${r.text}</p>
+                </div>`).join('')}
+           </div>`;
+
+    return `
+        <div class="reviews-section">
+            <h4><i class="fas fa-star" style="color:var(--primary)"></i> ${t('reviews_title')}</h4>
+            ${summaryHTML}
+            ${listHTML}
+            <div class="review-form">
+                <h5><i class="fas fa-pen"></i> ${t('review_write')}</h5>
+                <input type="text" id="review-author-${productId}" placeholder="${t('review_name_placeholder')}" maxlength="40">
+                <div class="star-rating-input" id="star-input-${productId}">
+                    ${[1,2,3,4,5].map(n => `<button class="star-btn" data-val="${n}" onclick="setReviewStar(${productId},${n})">&#9733;</button>`).join('')}
+                </div>
+                <textarea id="review-text-${productId}" rows="3" placeholder="${t('review_text_placeholder')}"></textarea>
+                <button class="btn-submit-review" onclick="submitReview(${productId})">
+                    <i class="fas fa-paper-plane"></i> ${t('review_submit')}
+                </button>
+            </div>
+        </div>`;
+}
+
+function setReviewStar(productId, value) {
+    document.querySelectorAll(`#star-input-${productId} .star-btn`).forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.val) <= value);
+    });
+    document.getElementById(`star-input-${productId}`).dataset.selected = value;
+}
+
+function submitReview(productId) {
+    const author = document.getElementById(`review-author-${productId}`).value.trim();
+    const text   = document.getElementById(`review-text-${productId}`).value.trim();
+    const rating = parseInt(document.getElementById(`star-input-${productId}`).dataset.selected || '0');
+
+    if (!author) { showNotification(t('review_warn_name'), 'warning'); return; }
+    if (!rating)  { showNotification(t('review_warn_rating'), 'warning'); return; }
+    if (!text)    { showNotification(t('review_warn_text'), 'warning'); return; }
+
+    const now = new Date();
+    saveReview(productId, {
+        author, rating, text,
+        date: now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+    });
+
+    const reviewsDiv = document.querySelector('.reviews-section');
+    if (reviewsDiv) reviewsDiv.outerHTML = renderReviewsSection(productId);
+    showNotification(t('review_success'), 'success');
+}
+
 // ========== PRODUCT DETAIL MODAL ==========
 function showProductDetail(productId) {
     const product = products.find(p => p.id === productId);
@@ -278,6 +374,7 @@ function showProductDetail(productId) {
                 </div>
             </div>
         </div>
+        ${renderReviewsSection(productId)}
     `;
 
     modal.classList.add('active');
@@ -285,6 +382,61 @@ function showProductDetail(productId) {
 
 function closeProductModal() {
     document.getElementById('product-modal').classList.remove('active');
+}
+
+// ========== SAMPLE REVIEWS ==========
+function addSampleReviews() {
+    const reviews = {
+        1:  [
+            { author: "Khalid M.", rating: 5, text: "Excellent filter, fits perfectly and noticeably improved engine performance. Will order again.", date: "12 Apr 2025" },
+            { author: "Youssef B.", rating: 4, text: "Good quality for the price. Easy to install, been running for 3 months with no issues.", date: "02 Mar 2025" },
+            { author: "Rachid T.", rating: 5, text: "Best air filter I've used on my truck. Highly recommend for dusty environments.", date: "18 Jan 2025" }
+        ],
+        6:  [
+            { author: "Hassan A.", rating: 5, text: "Incredible stopping power. These pads handle highway loads without any fade.", date: "05 May 2025" },
+            { author: "Omar F.", rating: 4, text: "Solid quality. Slight bedding-in noise the first week but then perfectly silent.", date: "14 Mar 2025" }
+        ],
+        11: [
+            { author: "Nabil K.", rating: 5, text: "Night driving transformed completely. Very bright and well-aimed beam pattern.", date: "20 Apr 2025" },
+            { author: "Amine S.", rating: 5, text: "Easy to swap in, no coding needed. Build quality feels very premium.", date: "08 Feb 2025" },
+            { author: "Tariq H.", rating: 3, text: "Good lights but one of the connectors needed a slight trim to fit properly.", date: "27 Jan 2025" }
+        ],
+        16: [
+            { author: "Mourad L.", rating: 5, text: "Perfect OEM replacement. Boost pressure back to factory spec after install.", date: "01 May 2025" },
+            { author: "Samir D.", rating: 4, text: "Quality part, shipping was fast. Had it installed by my mechanic with zero issues.", date: "11 Apr 2025" }
+        ],
+        21: [
+            { author: "Abdelhak R.", rating: 5, text: "Completely transformed the feel of the transmission. Very smooth engagement.", date: "03 May 2025" },
+            { author: "Karim N.", rating: 4, text: "Good kit, everything included. Takes some break-in time but well worth it.", date: "19 Mar 2025" },
+            { author: "Fouad Z.", rating: 5, text: "Been running 6 months hard use — no slip, no chatter. Excellent product.", date: "22 Feb 2025" }
+        ],
+        26: [
+            { author: "Bilal O.", rating: 5, text: "Ride quality is night and day. These springs handle full load beautifully.", date: "30 Apr 2025" },
+            { author: "Mehdi C.", rating: 4, text: "Good product, holds pressure well. Installation took about 2 hours.", date: "15 Feb 2025" }
+        ],
+        31: [
+            { author: "Adil Y.", rating: 5, text: "Cranks the engine in cold mornings without hesitation. Solid battery.", date: "28 Apr 2025" },
+            { author: "Reda M.", rating: 5, text: "Already on my second one from this brand — they last a long time.", date: "10 Jan 2025" }
+        ],
+        36: [
+            { author: "Hicham B.", rating: 5, text: "No more overheating on mountain routes. This radiator is a beast.", date: "22 Apr 2025" },
+            { author: "Soufiane A.", rating: 4, text: "Great build quality, all fittings lined up perfectly on my truck.", date: "05 Mar 2025" }
+        ],
+        41: [
+            { author: "Zakaria E.", rating: 5, text: "Restored full power to my truck. Genuine quality, runs like new.", date: "18 Apr 2025" },
+            { author: "Imad T.", rating: 4, text: "Took a professional to calibrate but the pump itself is top notch.", date: "02 Apr 2025" }
+        ],
+        46: [
+            { author: "Othmane K.", rating: 5, text: "Great sound and noticeably better exhaust flow. Well worth the price.", date: "10 May 2025" },
+            { author: "Yassine F.", rating: 5, text: "Perfect fit, welds look clean, finish is holding up well after 4 months.", date: "27 Mar 2025" },
+            { author: "Hamza P.", rating: 4, text: "Good system overall. One clamp needed a slight adjustment but easy fix.", date: "14 Feb 2025" }
+        ]
+    };
+    Object.entries(reviews).forEach(([id, list]) => {
+        if (!localStorage.getItem('reviews_' + id)) {
+            localStorage.setItem('reviews_' + id, JSON.stringify(list));
+        }
+    });
 }
 
 // ========== SAMPLE PRODUCTS ==========
@@ -660,6 +812,7 @@ function addSampleProducts() {
 
         products.push(...sampleProducts);
         saveToLocalStorage();
+        addSampleReviews();
 
         console.log('✅ Added', sampleProducts.length, 'sample products');
         showNotification('Sample products loaded successfully!', 'success');
@@ -706,4 +859,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // ========== GLOBAL EXPORTS ==========
 window.addSampleProducts    = addSampleProducts;
+window.setReviewStar        = setReviewStar;
+window.submitReview         = submitReview;
 window.updateCategoryCounts = updateCategoryCounts;
